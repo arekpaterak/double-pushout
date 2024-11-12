@@ -63,37 +63,38 @@ def use_as_input():
     else:
         return ""
 
-with gr.Blocks() as demo:
-    gr.Markdown("# Single Pushout")
-
-    with gr.Row(equal_height=True):
-        input_graph_field = gr.Textbox(label="Input Graph", interactive=True, lines=5)
-        input_graph_display = gr.Plot(label="Input Graph")
-
-    with gr.Row():
-        production_rule_field = gr.Textbox(label="Production Rule", interactive=True, lines = 15)
-        mapping_field = gr.Textbox(label="Indexes Mapping", interactive=True, lines = 5)
-        
-    with gr.Row(equal_height=True):
-        L_graph_display = gr.Plot(label="L")
-        K_graph_display = gr.Plot(label="K")
-        R_graph_display = gr.Plot(label="R")
-
-    with gr.Row():
-        apply_button = gr.Button("Apply")
-
-    with gr.Row():
-        output_graph_display = gr.Plot(label="Output Graph", scale=3)
-        use_as_input_button = gr.Button("Use as Input", scale=1)
-
-    input_graph_field.change(process_input_graph, [input_graph_field], [input_graph_display])
-    production_rule_field.change(process_production_rule, [production_rule_field], [L_graph_display, K_graph_display, R_graph_display])
-
-    apply_button.click(apply_production_rule, [input_graph_field, production_rule_field, mapping_field], [output_graph_display])
-
-    use_as_input_button.click(use_as_input, [], [input_graph_field])
-
 
 if __name__ == "__main__":
     output_graph = None
+
+    with gr.Blocks() as demo:
+        gr.Markdown("# Single Pushout")
+
+        with gr.Row(equal_height=True):
+            input_graph_field = gr.Textbox(label="Input Graph", interactive=True, lines=5)
+            input_graph_display = gr.Plot(label="Input Graph")
+
+        with gr.Row():
+            production_rule_field = gr.Textbox(label="Production Rule", interactive=True, lines = 15)
+            mapping_field = gr.Textbox(label="Indexes Mapping", interactive=True, lines = 5)
+            
+        with gr.Row(equal_height=True):
+            L_graph_display = gr.Plot(label="L")
+            K_graph_display = gr.Plot(label="K")
+            R_graph_display = gr.Plot(label="R")
+
+        with gr.Row():
+            apply_button = gr.Button("Apply")
+
+        with gr.Row():
+            output_graph_display = gr.Plot(label="Output Graph", scale=3)
+            use_as_input_button = gr.Button("Use as Input", scale=1)
+
+        input_graph_field.change(process_input_graph, [input_graph_field], [input_graph_display])
+        production_rule_field.change(process_production_rule, [production_rule_field], [L_graph_display, K_graph_display, R_graph_display])
+
+        apply_button.click(apply_production_rule, [input_graph_field, production_rule_field, mapping_field], [output_graph_display])
+
+        use_as_input_button.click(use_as_input, [], [input_graph_field])
+
     demo.launch()
