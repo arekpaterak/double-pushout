@@ -1,4 +1,4 @@
-# single-pushout
+# Double Pushout Graph Rewriting
 
 ## Installation
 - Make a virtual environment
