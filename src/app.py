@@ -3,17 +3,14 @@ import gradio as gr
 from matplotlib import pyplot as plt
 import networkx as nx
 
-from src.double_pushout import double_pushout
+from double_pushout import double_pushout
 from utils import *
 from graph import Graph
 from production import Production
 
 
-output_graph = None
-
 def default_pos(G: nx.Graph):
     pass
-
 
 def visualise_graph_with_fixed_pos(graph: Graph, pos: Optional[dict] = None):
     plt.figure(figsize=(10, 10))
@@ -32,7 +29,6 @@ def visualise_graph_with_fixed_pos(graph: Graph, pos: Optional[dict] = None):
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
     
     return plt.gcf()
-
 
 def process_input_graph(input_graph_text):
     input_graph = Graph.parse(input_graph_text)
@@ -97,4 +93,7 @@ with gr.Blocks() as demo:
 
     use_as_input_button.click(use_as_input, [], [input_graph_field])
 
-demo.launch()
+
+if __name__ == "__main__":
+    output_graph = None
+    demo.launch()
