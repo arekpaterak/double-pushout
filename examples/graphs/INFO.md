@@ -1,7 +1,7 @@
 Graph examples format, textual so it can work with text input field in the UI:
 
 ```
-ABC  <- Node labels
-AB  <- An edge between A and B
-BC
+AAB  <- Node labels
+1a2  <- An edge between nodes with ids 1 and 2 with a label "a"
+2b3
 ```

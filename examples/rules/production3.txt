@@ -1,0 +1,12 @@
+ABC
+1a2
+2b3
+
+ABC
+1a2
+
+ABCAA
+1a2
+2x5
+1x4
+4x5
