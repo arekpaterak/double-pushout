@@ -17,7 +17,6 @@ class Production:
     @classmethod
     def parse(cls, text: str) -> Self:
         sections = text.strip().replace("\r", "").split("\n\n")
-        print(sections)
 
         if len(sections) != 3:
             raise ValueError("Production should contain exactly 3 sections for L, K, and R")
