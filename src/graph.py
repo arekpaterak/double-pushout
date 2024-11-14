@@ -48,6 +48,6 @@ class Graph:
         lines.append(node_labels)
 
         for node1, node2, data in self._graph.edges(data=True):
-            lines.append(f"{node1}{data['label']}{node2}")
+            lines.append(f"{node1} {data['label']} {node2}")
 
         return "\n".join(lines)

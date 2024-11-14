@@ -12,6 +12,14 @@ from production import Production
 def default_pos(G: nx.Graph):
     pass
 
+def create_empty_plot():
+    """Creates an empty matplotlib figure with basic formatting."""
+    plt.figure(figsize=(10, 10))
+
+    G = nx.Graph()
+
+    return plt.gcf()
+
 def visualise_graph_with_fixed_pos(graph: Graph, pos: Optional[dict] = None):
     plt.figure(figsize=(10, 10))
 
@@ -79,42 +87,53 @@ if __name__ == "__main__":
     output_graph = None
 
     with gr.Blocks(css=css) as demo:
-        gr.Markdown("# Single Pushout")
+        gr.Markdown("# Double Pushout")
 
         with gr.Row(equal_height=True):
             with gr.Column():
                 input_file_upload = gr.File(
                     label="Upload Input Graph File",
                     file_types=[".txt"],
-                    type="binary"
+                    type="binary",
+                    file_count="single"
                 )
                 input_graph_field = gr.Textbox(
                     label="Input Graph", 
                     interactive=True, 
                     lines=5, 
-                    elem_classes="monospace"
+                    elem_classes="monospace",
+                    placeholder="Enter the graph in the following format:\n\nABC\n1 a 2\n2 b 3\n3 c 1"
                 )
-            input_graph_display = gr.Plot(label="Input Graph")
+            input_graph_display = gr.Plot(label="Input Graph", value=create_empty_plot())
 
         with gr.Row():
             with gr.Column():
                 production_file_upload = gr.File(
                     label="Upload Production Rule File",
                     file_types=[".txt"],
-                    type="binary"
+                    type="binary",
+                    file_count="single"
                 )
                 production_rule_field = gr.Textbox(
                     label="Production Rule", 
                     interactive=True, 
                     lines=15, 
-                    elem_classes="monospace"
+                    elem_classes="monospace",
+                    placeholder="Enter the production rule in the following format:\n\nABCD\n1 a 2\n2 b 3\n4 d 1\n\nABCD\n1 a 2\n2 b 3\n2 x 4\n\nABCD\n1 a 2\n2 b 3\n2 x 4"
                 )
-            mapping_field = gr.Textbox(label="Indexes Mapping", interactive=True, lines = 5, elem_classes="monospace")
+            with gr.Column():
+                mapping_field = gr.Textbox(
+                    label="Indexes Mapping", 
+                    interactive=True, 
+                    lines=5, 
+                    elem_classes="monospace",
+                    placeholder="Leave empty to use the default mapping, identity, e.g.\n\n1 1\n2 2\n3 3"
+                )
             
         with gr.Row(equal_height=True):
-            L_graph_display = gr.Plot(label="L")
-            K_graph_display = gr.Plot(label="K")
-            R_graph_display = gr.Plot(label="R")
+            L_graph_display = gr.Plot(label="L", value=create_empty_plot())
+            K_graph_display = gr.Plot(label="K", value=create_empty_plot())
+            R_graph_display = gr.Plot(label="R", value=create_empty_plot())
 
         with gr.Row():
             with gr.Column(scale=1):
@@ -133,7 +152,6 @@ if __name__ == "__main__":
             [production_file_upload],
             [production_rule_field]
         )
-
 
         input_graph_field.change(process_input_graph, [input_graph_field], [input_graph_display])
         production_rule_field.change(process_production_rule, [production_rule_field], [L_graph_display, K_graph_display, R_graph_display])
