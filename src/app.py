@@ -15,7 +15,7 @@ def default_pos(G: nx.Graph):
 def visualise_graph_with_fixed_pos(graph: Graph, pos: Optional[dict] = None):
     plt.figure(figsize=(10, 10))
 
-    G = graph._graph
+    G = graph.to_nx()
     
     if not pos:
         pos = nx.spring_layout(G)
@@ -45,10 +45,11 @@ def process_production_rule(production_rule_text):
     return L_image, K_image, R_image
 
 def apply_production_rule(input_graph_text, production_rule_text, mapping_text):
-    
     input_graph = Graph.parse(input_graph_text)
     production_rule = Production.parse(production_rule_text)
     mapping = parse_mapping(mapping_text)
+    if mapping == {}:
+        mapping = get_default_mapping(input_graph)
 
     global output_graph
     output_graph = double_pushout(input_graph, production_rule, mapping)
@@ -63,20 +64,52 @@ def use_as_input():
     else:
         return ""
 
+def load_file(file):
+    if file is None:
+        return None
+    content = file.decode('utf-8')
+    return content
+
+css = """
+.monospace {
+    font-family: monospace;
+"""
 
 if __name__ == "__main__":
     output_graph = None
 
-    with gr.Blocks() as demo:
+    with gr.Blocks(css=css) as demo:
         gr.Markdown("# Single Pushout")
 
         with gr.Row(equal_height=True):
-            input_graph_field = gr.Textbox(label="Input Graph", interactive=True, lines=5)
+            with gr.Column():
+                input_file_upload = gr.File(
+                    label="Upload Input Graph File",
+                    file_types=[".txt"],
+                    type="binary"
+                )
+                input_graph_field = gr.Textbox(
+                    label="Input Graph", 
+                    interactive=True, 
+                    lines=5, 
+                    elem_classes="monospace"
+                )
             input_graph_display = gr.Plot(label="Input Graph")
 
         with gr.Row():
-            production_rule_field = gr.Textbox(label="Production Rule", interactive=True, lines = 15)
-            mapping_field = gr.Textbox(label="Indexes Mapping", interactive=True, lines = 5)
+            with gr.Column():
+                production_file_upload = gr.File(
+                    label="Upload Production Rule File",
+                    file_types=[".txt"],
+                    type="binary"
+                )
+                production_rule_field = gr.Textbox(
+                    label="Production Rule", 
+                    interactive=True, 
+                    lines=15, 
+                    elem_classes="monospace"
+                )
+            mapping_field = gr.Textbox(label="Indexes Mapping", interactive=True, lines = 5, elem_classes="monospace")
             
         with gr.Row(equal_height=True):
             L_graph_display = gr.Plot(label="L")
@@ -84,11 +117,23 @@ if __name__ == "__main__":
             R_graph_display = gr.Plot(label="R")
 
         with gr.Row():
-            apply_button = gr.Button("Apply")
+            with gr.Column(scale=1):
+                apply_button = gr.Button("Apply", elem_classes="circle-button")
+                use_as_input_button = gr.Button("Use as Input")
+            with gr.Column(scale=3):
+                output_graph_display = gr.Plot(label="Output Graph")
 
-        with gr.Row():
-            output_graph_display = gr.Plot(label="Output Graph", scale=3)
-            use_as_input_button = gr.Button("Use as Input", scale=1)
+        input_file_upload.upload(
+            load_file,
+            [input_file_upload],
+            [input_graph_field]
+        )
+        production_file_upload.upload(
+            load_file,
+            [production_file_upload],
+            [production_rule_field]
+        )
+
 
         input_graph_field.change(process_input_graph, [input_graph_field], [input_graph_display])
         production_rule_field.change(process_production_rule, [production_rule_field], [L_graph_display, K_graph_display, R_graph_display])

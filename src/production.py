@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import astuple, dataclass
 from typing import Self
 import networkx as nx
 
@@ -7,13 +7,17 @@ from graph import Graph
 
 @dataclass
 class Production:
-    L: nx.Graph
-    K: nx.Graph
-    R: nx.Graph
+    L: Graph
+    K: Graph
+    R: Graph
+
+    def to_nx(self):
+        return self.L._graph, self.K._graph, self.R._graph
 
     @classmethod
     def parse(cls, text: str) -> Self:
-        sections = text.split("\n\n")
+        sections = text.strip().replace("\r", "").split("\n\n")
+        print(sections)
 
         if len(sections) != 3:
             raise ValueError("Production should contain exactly 3 sections for L, K, and R")

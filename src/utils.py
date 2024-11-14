@@ -19,6 +19,9 @@ def load_production(path: str) -> Production:
     return Production.parse(input_text)
     
 def parse_mapping(mapping_text: str) -> dict:
+    if not mapping_text:
+        return {}
+
     lines = mapping_text.strip().split("\n")
     
     mapping = {}
@@ -27,3 +30,6 @@ def parse_mapping(mapping_text: str) -> dict:
         mapping[int(node1)] = int(node2)
         
     return mapping
+
+def get_default_mapping(graph: Graph) -> dict:
+    return {node: node for node in graph.to_nx().nodes()}

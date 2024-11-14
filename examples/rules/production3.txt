@@ -1,12 +1,12 @@
 ABC
-1a2
-2b3
+1 a 2
+2 b 3
 
 ABC
-1a2
+1 a 2
 
 ABCAA
-1a2
-2x5
-1x4
-4x5
+1 a 2
+2 x 5
+1 x 4
+4 x 5

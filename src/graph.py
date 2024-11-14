@@ -9,7 +9,7 @@ class Graph:
 
     @classmethod
     def parse(cls, text: str) -> Self:
-        lines = text.strip().split('\n')
+        lines = text.strip().replace("\r", "").split('\n')
         
         G = nx.Graph()
 
@@ -22,7 +22,7 @@ class Graph:
             G.add_node(id, label=label)
 
         for line in lines[1:]:
-            edge_definition = list(line.strip().replace(" ", ""))
+            edge_definition = line.strip().split()
             if len(edge_definition) != 3:
                 raise ValueError("Edge definition should match the format: node1 label node2")
             
@@ -37,6 +37,9 @@ class Graph:
             G.add_edge(int(node1), int(node2), label=label)
 
         return cls(G)
+
+    def to_nx(self) -> nx.Graph:
+        return self._graph
 
     def to_text(self) -> str:
         lines = []

@@ -1,9 +1,9 @@
 ABC
-2b3
+2 b 3
 
 ABC
 
 ABCA
-1z3
-3y4
-4x1
+1 z 3
+3 y 4
+4 x 1

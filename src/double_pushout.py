@@ -3,8 +3,8 @@ from production import Production
 
 
 def double_pushout(input_graph: Graph, production_rule: Production, mapping: dict) -> Graph:
-    G = input_graph._graph
-    L, K, R = production_rule.L._graph, production_rule.K._graph, production_rule.R._graph
+    G = input_graph.to_nx()
+    L, K, R = production_rule.to_nx()
     inverse_mapping = {v: k for k, v in mapping.items()}
     
     # Step 1: Identify the match and remove the L-K portion
@@ -42,7 +42,6 @@ def double_pushout(input_graph: Graph, production_rule: Production, mapping: dic
 
     # Add nodes and edges from R to G
     for n, d in R.nodes(data=True):
-
         if n in K_nodes:
             G.nodes[mapping[n]]['label'] = d['label']  # Update label if necessary
         else:
