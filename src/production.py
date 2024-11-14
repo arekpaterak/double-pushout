@@ -11,7 +11,7 @@ class Production:
     K: Graph
     R: Graph
 
-    def to_nx(self):
+    def to_unpacked_nx(self):
         return self.L._graph, self.K._graph, self.R._graph
 
     @classmethod
