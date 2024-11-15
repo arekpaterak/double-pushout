@@ -38,7 +38,7 @@ def double_pushout(input_graph: Graph, production_rule: Production, mapping: dic
     # Add nodes that are in R, but not in K
     max_node_id = max(G.nodes(), default=0)
     new_node_ids = {n: max_node_id + i for i, n in enumerate(R.nodes - K.nodes, 1)}
-    new_inverse_mapping = {n: mapping[n] if n in K.nodes else new_node_ids[n] for n in R.nodes()}
+    new_inverse_mapping = {n: inverse_mapping[n] if n in K.nodes else new_node_ids[n] for n in R.nodes()}
     for n, d in R.nodes(data=True):
         if n not in K.nodes:
             G.add_node(new_inverse_mapping[n], **d)

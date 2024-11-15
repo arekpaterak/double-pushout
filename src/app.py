@@ -127,7 +127,7 @@ if __name__ == "__main__":
                     interactive=True, 
                     lines=5, 
                     elem_classes="monospace",
-                    placeholder="Leave empty to use the default mapping, identity, e.g.\n\n1 1\n2 2\n3 3"
+                    placeholder="Leave empty to use the default mapping (identity), e.g.\n\n1 1\n2 2\n3 3"
                 )
             
         with gr.Row(equal_height=True):
@@ -138,7 +138,7 @@ if __name__ == "__main__":
         with gr.Row():
             with gr.Column(scale=1):
                 apply_button = gr.Button("Apply", elem_classes="circle-button")
-                use_as_input_button = gr.Button("Use as Input")
+                use_as_input_button = gr.Button("Use the Result as the Input")
             with gr.Column(scale=3):
                 output_graph_display = gr.Plot(label="Output Graph")
 
