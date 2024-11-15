@@ -33,6 +33,9 @@ def double_pushout(input_graph: Graph, production_rule: Production, mapping: dic
         inverse_mapping[n] for n in L.nodes
         if n not in K.nodes
     ]
+    for node in nodes_to_remove:
+        if G.degree(node) != 0:
+            raise ValueError("Cannot remove a node that has edges.")
     G.remove_nodes_from(nodes_to_remove)
 
     # Add nodes that are in R, but not in K
